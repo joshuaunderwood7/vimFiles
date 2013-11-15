@@ -1,0 +1,1 @@
+/misc/vim/autoload/go/complete.vim
