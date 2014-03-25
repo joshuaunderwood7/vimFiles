@@ -1,9 +1,9 @@
 " ----my additions----
 "
 " Quick Make command (moved to ~/.vim/ftplugin/clojure.vim
- noremap <F5> :!python %<CR>
- vnoremap <F5> <C-C>:!python %<CR>
- inoremap <F5> <C-O>:!python %<CR>
+ noremap <F5> :!clojure %<CR>
+ vnoremap <F5> <C-C>:!clojure %<CR>
+ inoremap <F5> <C-O>:!clojure %<CR>
 
 
 
