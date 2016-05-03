@@ -1,23 +1,26 @@
-" Rebind <Leader> key
-" I like to have it here becuase it is easier to reach than the default and
-" it is next to ``m`` and ``n`` which I use for navigating between tabs.
- let mapleader = ","
+" Steal this config file. "
 
-""----My additions----
+" Make the shell read my .bashrc
+""set shell=/bin/bash\ -i
+
+" Make the shell read my .profile
+set shell=/bin/bash\ --login
+
+" Rebind <Leader> key
+ let mapleader = ","
 
 "This makes space and delete enter insert mode
 noremap <Space> i<Space>
-noremap <Delete> i<Delete>
+""noremap <Delete> i<Delete>
 
 "New tabs
-noremap <C-t> :tab new<CR>
-vnoremap <C-t> :tab new<CR>
-inoremap <C-t> :tab new<CR>
+noremap <Leader>t :tab new<CR>
 
 "toggle spell check with :spell
-:map <F7> :setlocal spell! spelllang=en_us<CR>
+noremap<F7>  :setlocal spell! spelllang=en_us<CR>
+"inoremap<F7> <ESC>:setlocal spell! spelllang=en_us<CR>a
 "Call aspell on the current buffer file
-:map <Leader><F7> :!aspell -c %<CR>
+noremap <Leader><F7> :!aspell -c %<CR>
 
 " Quicksave command
 " Modified to exit insert mode. Combined with save 
@@ -27,56 +30,10 @@ inoremap <C-t> :tab new<CR>
  vnoremap <C-Z> <C-C>:update<CR>
  inoremap <C-Z> <Esc>:update<CR><Esc>
 
-" Quick GIT commands
-" These seemed to crash my vim often.  I think that
-" I needed to move it off of G.
-""noremap <C-G><C-I> :!git init
-""noremap <C-G><C-A> :!git add 
-""noremap <C-G><C-U> :!git add -u
-""noremap <C-G><C-C> :!git commit -m "
-
 " I care very much about filetypes and sytax highlighting
 filetype on
 syntax on
 filetype plugin indent on
-
-" Quick Make command (moved to ~/.vim/ftplugin/cpp.vim
-" This is really useful, but is better if launguage dependent
-"" noremap <F5> :make<CR>
-"" vnoremap <F5> <C-C>:make<CR>
-"" inoremap <F5> <C-O>:make<CR>
-
-"add .tem to c++ FileType (moved to ~/.vim/ftplugin/cpp.vim)
-"" au BufNewFile,BufRead *.tem set filetype=cpp
-
-"This is added for vala syntax highlighting
-autocmd BufRead *.vala,*.vapi set efm=%f:%l.%c-%[%^:]%#:\ %t%[%^:]%#:\ %m
-au BufRead,BufNewFile *.vala,*.vapi setfiletype vala
-
-"Vala syntax file additionally supports following options
-" Disable valadoc syntax highlight
-""let vala_ignore_valadoc = 1
-
-" Enable comment strings
-""let vala_comment_strings = 1
-
-" Highlight space errors
-""let vala_space_errors = 1
-
-" Disable trailing space errors
-""let vala_no_trail_space_error = 1
-
-" Disable space-tab-space errors
-""let vala_no_tab_space_error = 1
-
-" Minimum lines used for comment syncing (default 50)
-""let vala_minlines = 120
-
-
-" Sample .vimrc file by Martin Brochhaus
-" Presented at PyCon APAC 2012
-" These settings are pro, some where moved up to 'my additions'
-" For a more logical grouping, most below are disabled
 
 " Automatic reloading of .vimrc, ie) changes are immediate
  autocmd! bufwritepost .vimrc source %
@@ -84,13 +41,13 @@ au BufRead,BufNewFile *.vala,*.vapi setfiletype vala
 " Better copy & paste  
 " When you want to paste large blocks of code into vim, press F2 before you
 " paste. At the bottom you should see ``-- INSERT (paste) --``.
+ set pastetoggle=<F2>
+ set clipboard=unnamed
 
-"" set pastetoggle=<F2>
-"" set clipboard=unnamed
-
+ 
 " Mouse and backspace
-"" set mouse=a  " on OSX press ALT and click
-"" set bs=2     " make backspace behave like normal again (very important in gVim)
+""set mouse=a  " on OSX press ALT and click
+set bs=2     " make backspace behave like normal again (very important in gVim)
 
 
 " Bind nohl
@@ -99,6 +56,10 @@ au BufRead,BufNewFile *.vala,*.vapi setfiletype vala
  noremap <C-n> :nohl<CR>
  vnoremap <C-n> :nohl<CR>
  inoremap <C-n> :nohl<CR>
+
+" move search to center of screen
+noremap n nzz
+noremap N Nzz
 
 
 " Quick quit command
@@ -118,9 +79,18 @@ au BufRead,BufNewFile *.vala,*.vapi setfiletype vala
  map <Leader>n <esc>:tabprevious<CR>
  map <Leader>m <esc>:tabnext<CR>
 
+" Buffer swapping
+ map <Leader>k <esc>:bprevious<CR>
+ map <Leader>l <esc>:bnext<CR>
 
-" map sort function to a key
-"" vnoremap <Leader>s :sort<CR>
+" easy file open
+ map <C-f> <C-w><C-f>
+
+" Better resizing 
+ map <Leader>= :resize +7<CR>
+ map <Leader>- :resize -7<CR>
+ map <Leader>_ :vertical resize +7<CR>
+ map <Leader>+ :vertical resize -7<CR>
 
 
 " easier moving of code blocks
@@ -129,6 +99,8 @@ au BufRead,BufNewFile *.vala,*.vapi setfiletype vala
  vnoremap < <gv  " better indentation
  vnoremap > >gv  " better indentation
 
+" a more portable hippie-complete
+inoremap <C-\> <C-x><C-p>
 
 " Show whitespace
 " MUST be inserted BEFORE the colorscheme command
@@ -139,15 +111,16 @@ au BufRead,BufNewFile *.vala,*.vapi setfiletype vala
 " Color scheme
 " mkdir -p ~/.vim/colors && cd ~/.vim/colors
 " wget -O wombat256mod.vim http://www.vim.org/scripts/download_script.php?src_id=13400
-"" set t_Co=256
-"" color wombat256mod
+ set t_Co=256
+ color wombat256mod
+"" color darkblue
 
 
 " Enable syntax highlighting
 " You need to reload this file for the change to apply
-"" filetype off  "Already turned on above, turn on if snipping this
- filetype plugin indent on
-"" syntax on    "Already turned on above, turn on if snipping this
+"" filetype off  " Already turned on above, turn on if snipping this
+""  filetype plugin indent on " Already set above, uncomment if copying this
+"" syntax on    " Already turned on above, turn on if snipping this
 
 
 " Showing line numbers and length
@@ -157,11 +130,6 @@ au BufRead,BufNewFile *.vala,*.vapi setfiletype vala
  set fo-=t   " don't automatically wrap text when typing
  set colorcolumn=80
  highlight ColorColumn ctermbg=233
-
-
-" easier formatting of paragraphs
-"" vmap Q gq
-"" nmap Q gqap
 
 
 " Useful settings
@@ -207,75 +175,40 @@ au BufRead,BufNewFile *.vala,*.vapi setfiletype vala
  inoremap <silent><C-j> <C-R>=OmniPopup('j')<CR>
  inoremap <silent><C-k> <C-R>=OmniPopup('k')<CR>
 
-"--------------------Omnifuc setup---------------
-"from OmnicppFunc documentation
-"while in INSERT mode <C-x><C-o> to activate
-"unless acp installed
-"" set nocp
-filetype plugin on
-set omnifunc=syntaxcomplete#Complete
-au BufNewFile,BufRead,BufEnter *.cpp,*.hpp,*.tem set omnifunc=omni#cpp#complete#Main
-set tags+=$HOME/.vim/tags/cpp_tags
+" Pathogen package management
+ execute pathogen#infect()
 
-" build tags of your own project with Ctrl-F12
-map <C-F12> :!ctags -R --sort=yes --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+" This makes C-] jumping case sensitive, then turns case-sensitivity off again
+" go to defn of tag under the cursor
+fun! MatchCaseTag()
+    let ic = &ic
+    set noic
+    try
+        exe 'tjump ' . expand('<cword>')
+    finally
+       let &ic = ic
+    endtry
+endfun
+nnoremap <silent> <c-]> :call MatchCaseTag()<CR>
 
-" OmniCppComplete
-let OmniCpp_NamespaceSearch = 1
-let OmniCpp_GlobalScopeSearch = 1
-let OmniCpp_ShowAccess = 1
-let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
-let OmniCpp_MayCompleteDot = 1 " autocomplete after .
-let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
-let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
-let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
-" automatically open and close the popup menu / preview window
-au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
-set completeopt=menuone,menu,longest,preview
+" vim-LaTeX stuff
+" REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
+"" filetype plugin on " Already set above, uncomment if copying this
 
-" Setup Pathogen to manage your plugins
-" mkdir -p ~/.vim/autoload ~/.vim/bundle
-" curl -so ~/.vim/autoload/pathogen.vim https://raw.github.com/tpope/vim-pathogen/HEAD/autoload/pathogen.vim
-" Now you can install any plugin into a .vim/bundle/plugin-name/ folder
-"" call pathogen#infect()
+" IMPORTANT: win32 users will need to have 'shellslash' set so that latex
+" can be called correctly.
+""set shellslash
 
+" IMPORTANT: grep will sometimes skip displaying the file name if you
+" search in a singe file. This will confuse Latex-Suite. Set your grep
+" program to always generate a file-name.
+set grepprg=grep\ -nH\ $*
 
-" ============================================================================
-" Python IDE Setup
-" ============================================================================
+" OPTIONAL: This enables automatic indentation as you type.
+""filetype indent on " Already set above, uncomment if copying this
 
-
-" Settings for vim-powerline
-" cd ~/.vim/bundle
-" git clone git://github.com/Lokaltog/vim-powerline.git
-"" set laststatus=2
-
-
-" Settings for ctrlp
-" cd ~/.vim/bundle
-" git clone https://github.com/kien/ctrlp.vim.git
- ""let g:ctrlp_max_height = 30
- ""set wildignore+=*.pyc
- ""set wildignore+=*_build/*
- ""set wildignore+=*/coverage/*
-
-
-" Settings for python-mode
-" cd ~/.vim/bundle
-" git clone https://github.com/klen/python-mode
-"" map <Leader>g :call RopeGotoDefinition()<CR>
-"" let ropevim_enable_shortcuts = 1
-"" let g:pymode_rope_goto_def_newwin = "vnew"
-"" let g:pymode_rope_extended_complete = 1
-"" let g:pymode_breakpoint = 0
-"" let g:pymode_syntax = 1
-"" let g:pymode_syntax_builtin_objs = 0
-"" let g:pymode_syntax_builtin_funcs = 0
-"" map <Leader>b Oimport pdb; pdb.set_trace() # BREAKPOINT<C-c>
-
-
-" Python folding
-" mkdir -p ~/.vim/ftplugin
-" wget -O ~/.vim/ftplugin/python_editing.vim http://www.vim.org/scripts/download_script.php?src_id=5492
-"" set nofoldenable
+" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
+" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
+" The following changes the default filetype back to 'tex':
+let g:tex_flavor='latex'
 
