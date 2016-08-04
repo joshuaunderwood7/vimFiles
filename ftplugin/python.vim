@@ -10,10 +10,6 @@
 " noremap \ :lne<CR>
 " noremap \| :lpre<CR>
 
-" Turn on syntax and filetype.  (should already be on)
- syntax on
- filetype on
-
 " Enable folding
  set foldmethod=indent
  set foldlevel=99
@@ -28,6 +24,6 @@
  set fileformat=unix
 
 " pdb macro
-noremap <Leader>b Ofrom pdb import set_trace; set_trace()<ESC>
-
+""noremap <Leader>b Ofrom pdb import set_trace; set_trace()<ESC>
+noremap <Leader>b Ofrom ipdb import set_trace; set_trace()<ESC>
 
