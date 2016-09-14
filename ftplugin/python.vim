@@ -27,3 +27,19 @@
 ""noremap <Leader>b Ofrom pdb import set_trace; set_trace()<ESC>
 noremap <Leader>b Ofrom ipdb import set_trace; set_trace()<ESC>
 
+" use :make for python syntax check and run.
+autocmd BufRead *.py set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
+autocmd BufRead *.py set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+autocmd BufRead *.py nmap <F5> :!python %<CR>
+
+" Set's protable pydoc call for pydoc.vim
+let g:pydoc_cmd = 'python -m pydoc' 
+
+" if you want to open pydoc files in vertical splits or tabs, 
+" give the appropriate command in your .vimrc with: 
+""let g:pydoc_open_cmd = 'vsplit' 
+""let g:pydoc_open_cmd = 'tabnew' 
+
+" The script will highlight the search term by default. To disable 
+" this behaviour put in your .vimrc: 
+""let g:pydoc_highlight=0 
