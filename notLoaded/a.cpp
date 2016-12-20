@@ -402,6 +402,11 @@ std::vector<std::vector<double> > combineAngles(
       , const std::vector<double> & ys
       )
 {
+    //Create all the combinations of angles from the current lists, and
+    //the input list.
+    //xs : [[angles]]
+    //ys :  [angles]
+
     std::vector<std::vector<double> > result;
     for (int x=0; x<xs.size(); ++x)
     {
@@ -417,7 +422,7 @@ std::vector<std::vector<double> > combineAngles(
 
 
 std::vector<double> convertHyperSperetoCoordinates(
-                                        const double                raduis
+                                        const double                radius
                                       , const std::vector<double> & thetaPairs)
 {
     /*
@@ -432,7 +437,7 @@ std::vector<double> convertHyperSperetoCoordinates(
     std::vector<double> points;
     for (int _unused_ = 0; _unused_ <= thetaPairs.size(); ++_unused_)
     {
-        points.push_back(raduis);
+        points.push_back(radius);
     }
 
     for (int ii=0; ii<thetaPairs.size(); ++ii)
@@ -448,65 +453,131 @@ std::vector<double> convertHyperSperetoCoordinates(
 
 }
 
-std::vector<double> getMSR_ND_hyperShpere( const std::vector<UtilityCurve> & uc_s
-                                         , const double                      raduis
-                                         , const int                         N
-                                         )
-{
-    double              thetaStep = (M_PI / 2.0) / N;
-    double              value;
-    double              maxValue = -1;
-    std::vector<double> bestPoints;
-
-    std::vector<double> points;
-    std::vector<double> thetas;
+std::vector<double> 
+getMSR_ND_hyperShpere_prime( const std::vector<UtilityCurve> & uc_s
+                           , const double                      radius
+                           , const int                         N
+                           , const std::vector<double>       & centerThetas
+                           , const bool                        resultInTheta
+                           , const double                      thetaRange
+                           ){
+    //if not centerThetas: centerThetas = [(pi/4.0) for _ in uc_s[1:]]
+    double                            thetaStep = thetaRange / N;
+    std::vector<std::vector<double> > thetas;
     std::vector<std::vector<double> > thetaPairs;
 
-    // set up thetaPairs for first UtilityCurve's angles
-    for(double theta=0.0; theta<=(M_PI / 2.0); theta += thetaStep)
-    { 
-        //To be used to combine angles
-        thetas.push_back(theta);
+    double              value;
+    double              maxValue = -1;
+    std::vector<double> points;
+    std::vector<double> bestPoints;
+    std::vector<double> bestThetas;
 
-        //The first set
-        std::vector<double> singleTheta;
-        singleTheta.push_back(theta);
-        thetaPairs.push_back(singleTheta);
+    for (int ii = 0; ii < centerThetas.size(); ++ii)
+    {
+        std::vector<double> theta;
+        for (int jj = 0; jj <= N; ++jj)
+        {
+            double step = (thetaStep * (jj - (N/2)));
+            theta.push_back(centerThetas[ii] + step);
+            if(ii==0) 
+            {
+                std::vector<double> transposer;
+                transposer.push_back(centerThetas[ii] + step);
+                thetaPairs.push_back(transposer); //add first one to thetaPairs
+            }
+        }
+        thetas.push_back(theta);
     }
 
     // for every UtilityCurve after the first, add thetas for combinations
     // N UtilityCurves require N-1 angles to describe. also, the first
     // one has already been done.
-    for(int _unused_=(uc_s.size()-1); _unused_>1; --_unused_)
+    for(int ii=1; ii<thetas.size(); ++ii)
     {
-        thetaPairs = combineAngles(thetaPairs, thetas);
+        thetaPairs = combineAngles(thetaPairs, thetas[ii]);
     }
 
     //get the Best Cartesian points for Maximum Utility value
     for(int ii=0; ii<thetaPairs.size(); ++ii)
     {
         value = 0.0;
-        points = convertHyperSperetoCoordinates(raduis, thetaPairs[ii]);
+        points = convertHyperSperetoCoordinates(radius, thetaPairs[ii]);
         for (int jj=0; jj<points.size(); ++jj)
         {
             value += Utility(uc_s[jj], points[jj]);
         }
         if (value > maxValue) 
         {
-            maxValue = value;
+            maxValue   = value;
             bestPoints = points;
+            bestThetas = thetaPairs[ii];
         }
         
     }
    
+    if (resultInTheta) return bestThetas;
     return bestPoints;
+}
+
+std::vector<double> getMSR_ND_hyperShpere( const std::vector<UtilityCurve> & uc_s
+                                         , const double                      radius
+                                         , const int                         N
+                                         , const double                      minStep
+                                         )
+{
+    //Use a hypsersphere to find the optional progression values
+    //for the input Utility Curves (uc_s) for a given amount of 
+    //effort (r) over N evenly spaced test points.
+    //uc_s    : The Utility Curves that are to be optimized.
+    //radius  : The effort (distance from the origin, also radius of the
+    //          hypsersphere) to test the Utility Curves.
+    //N       : The number of angles to test the hypsersphere at.
+    //minStep : The minimum theta range to check.
+
+    //Keep in mind the complexity of this function is along O(N^|uc_s|).
+
+    double               thetaRange = M_PI / 2.0;
+    std::vector<double>  thetas; 
+    for(int ii = 1; ii < uc_s.size(); ++ii)
+    {
+        thetas.push_back(M_PI/4.0);
+    }
+
+    while(thetaRange > minStep)
+    {
+        thetas = getMSR_ND_hyperShpere_prime( uc_s, radius, N, thetas
+                                            , true, thetaRange );
+        thetaRange = 2 * thetaRange / N;
+
+        /*
+         *std::cout << radius << std::endl;
+         *for(int ii = 0; ii < thetas.size(); ++ii) 
+         *    std::cout << thetas[ii]-thetaRange  << " "
+         *              << thetas[ii]  << " "
+         *              << thetaRange+thetas[ii]  << " "
+         *              << std::endl;
+         *std::cout << std::endl << std::endl;;
+         */
+        
+    }
+
+    return convertHyperSperetoCoordinates(radius, thetas);
 }
 
 std::vector<std::vector<double> > getMSR_ND(
                                     const std::vector<UtilityCurve> & uc_s
                                   , const int                         N
+                                  , const double                      MINSTEP=1e-12
+                                  , const int                         DIVISIONS=13
                                   )
 {
+    //get the MSR curve for an N-dimensional option set, represented by
+    //the Utility Curves (uc_s).  The result will be the optimized progression
+    //for the Utility Curves for a given effort, not the sequence that should
+    //be followed.
+
+    //Keep in mind the complexity of this function is along O(N^(|uc_s|+1)).
+
     std::vector<std::vector<double> > points;
     double radiusStep;
     double radiusMin = 0.0;
@@ -520,7 +591,7 @@ std::vector<std::vector<double> > getMSR_ND(
 
     for (double radii=radiusMin; radii<=radiusMax; radii += radiusStep)
     {
-        points.push_back(getMSR_ND_hyperShpere(uc_s, radii, N));
+        points.push_back(getMSR_ND_hyperShpere(uc_s, radii, DIVISIONS, MINSTEP));
     }
     
     return points;
@@ -528,29 +599,42 @@ std::vector<std::vector<double> > getMSR_ND(
 
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
+bool ANALYSIS = false;
 int main(int argc, char** argv)
 {
-    UtilityCurve uc_1 = makeUtilityCurve( 0, 7,10,13,20, 1.0, 800.0, 0);
-    UtilityCurve uc_2 = makeUtilityCurve( 0, 9,11,15,20, 1.0, 900.0, 0);
-    UtilityCurve uc_3 = makeUtilityCurve( 0, 3, 5,10,20, 1.0, 700.0, 0);
-    UtilityCurve uc_4 = makeUtilityCurve( 0, 7, 9,12,20, 1.0, 010.0, 0);
-    UtilityCurve uc_5 = makeUtilityCurve( 0,10,13,15,20, 1.0, 010.0, 0);
+    UtilityCurve uc_1 = makeUtilityCurve( 0, 7,10,13,20, 1.0, 100.0, 0);
+    UtilityCurve uc_2 = makeUtilityCurve( 0, 9,11,15,20, 1.0, 100.0, 0);
+    UtilityCurve uc_3 = makeUtilityCurve( 0, 3, 5,10,20, 1.0, 100.0, 0);
+    UtilityCurve uc_4 = makeUtilityCurve( 0, 7, 9,12,20, 1.0, 100.0, 0);
+    UtilityCurve uc_5 = makeUtilityCurve( 0,10,13,15,20, 1.0, 100.0, 0);
+
+    //uc_1.weight = 0.3;
+    //uc_2.weight = 0.5;
+    //uc_2.weight = 0.2;
 
     std::vector<std::vector<double> > msrCurve;
     std::vector<UtilityCurve> uc_s;
     uc_s.push_back(uc_1);
     uc_s.push_back(uc_2);
-    //uc_s.push_back(uc_3);
-    //uc_s.push_back(uc_4);
-    //uc_s.push_back(uc_5);
+    uc_s.push_back(uc_3);
+    uc_s.push_back(uc_4);
+    uc_s.push_back(uc_5);
 
-    msrCurve = getMSR_ND(uc_s, 1110);
+    double realEffort;
+    double totalUtil;
+
+    msrCurve = getMSR_ND(uc_s, 100);
     for (double i=0; i < msrCurve.size(); ++i)
     {
+        realEffort = 0.0;
+        totalUtil  = 0.0;
         for(int j=0; j < msrCurve[i].size(); ++j)
         {
-            std::cout << msrCurve[i][j] << ' ';
+            std::cout << msrCurve[i][j] << '\t';
+            realEffort += msrCurve[i][j];
+            totalUtil  += Utility(uc_s[j], msrCurve[i][j]);
         }
+        if (ANALYSIS) std::cout << realEffort << "\t" << totalUtil;
         std::cout << std::endl;
     }
 
