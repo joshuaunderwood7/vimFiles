@@ -20,3 +20,5 @@ map <C-\> :copen<CR>
 map <Leader>\ :cclose<CR>
 
 
+ highlight ColorColumn ctermbg='darkgrey'
+
