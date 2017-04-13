@@ -15,7 +15,7 @@ noremap <F12> :cfile ~/output.txt<CR>
  au BufNewFile,BufRead *.tem set filetype=cpp
 
 "debugging remap
-map \ :cn<CR>
+map \ :cn<CR>zz
 map <C-\> :copen<CR>
 map <Leader>\ :cclose<CR>
 
