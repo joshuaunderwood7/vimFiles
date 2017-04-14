@@ -1,10 +1,13 @@
 " Steal this config file. "
 
+" Turn off the bell
+set belloff=all
+
 " Make the shell read my .bashrc
 ""set shell=/bin/bash\ -i
 
 " Make the shell read my .profile
-set shell=/bin/bash\ --login
+""set shell=/bin/bash\ --login
 
 " Rebind <Leader> key
  let mapleader = ","
@@ -52,10 +55,9 @@ set bs=2     " make backspace behave like normal again (very important in gVim)
 
 " Bind nohl
 " Removes highlight of your last search
-" ``<C>`` stands for ``CTRL`` and therefore ``<C-n>`` stands for ``CTRL+n``
  noremap <C-n> :nohl<CR>
  vnoremap <C-n> :nohl<CR>
- inoremap <C-n> :nohl<CR>
+" inoremap <C-n> <ESC>:nohl<CR> "Leave this one, this is search next!
 
 " move search to center of screen
 noremap n nzz
@@ -131,8 +133,7 @@ noremap N Nzz
  set nowrap  " don't automatically wrap on load
  set fo-=t   " don't automatically wrap text when typing
  set colorcolumn=80
-" highlight ColorColumn ctermbg=233
- highlight ColorColumn ctermbg='darkgrey'
+ highlight ColorColumn ctermbg=233
 
 
 " Useful settings
