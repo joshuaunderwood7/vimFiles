@@ -230,8 +230,8 @@ UtilityCurve GenerateCDF( const double x_0
         k_1_high         = k_1 + k_1_d;
         k_2_high         = calcK2(x_25, x_50, x_75, k_1_high);
         retVal           = calcK3_4(x_0, x_50, x_100, k_1_high, k_2_high);
-        k_3_low          = retVal.left;
-        k_4_low          = retVal.right;
+        k_3_high          = retVal.left;
+        k_4_high          = retVal.right;
         trialCurve.k_1   = k_1_high;
         trialCurve.k_2   = k_2_high;
         trialCurve.k_3   = k_3_high;
