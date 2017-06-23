@@ -28,6 +28,7 @@ class UtilityCurve(UtilityCurveFunction):
     the progression along the Utility Curve.
     """
     def __init__( self, x_0, x_25, x_50, x_75, x_100
+                , normalize=False
                 , calculate=True
                 , weight=1.0
                 , bounty=1.0
@@ -39,6 +40,16 @@ class UtilityCurve(UtilityCurveFunction):
         not calculated.  They must be set before use, but this can
         be used to prevent recalculating UtilityCurveFunction at runtime.
         """
+        if normalize:
+            slef.normalized = True
+            self.true_min = x_0
+            self.true_max = x_100
+            x_0   = self.normalize(x_0)
+            x_25  = self.normalize(x_25)
+            x_50  = self.normalize(x_50)
+            x_75  = self.normalize(x_75)
+            x_100 = self.normalize(x_100)
+        
         if calculate:
             UtilityCurveFunction.__init__(self, x_0, x_25, x_50, x_75, x_100)
         self.x = 0.0
@@ -50,6 +61,20 @@ class UtilityCurve(UtilityCurveFunction):
         self.inflectionP = False
         self.MSRcache = dict()
 
+    def normalize(self, x):
+        """
+        Normalize value accoring to x_value init params
+        """
+        if not self.normalized: return x
+        return (x - self.true_min) / (self.true_max - self.true_min)
+
+    def normalize(self, x):
+        """
+        Denormalize value accoring to x_value init params
+        """
+        if not self.normalized: return x
+        return x * (self.true_max - self.true_min) + self.true_min
+        
     def reset(self):
         """
         Set progression to 0.0
@@ -630,8 +655,16 @@ def getMSR_ND_hyperShpere_prime( uc_s
     """
     if not centerThetas: centerThetas = [(pi/4.0) for _ in uc_s[1:]]
     thetaStep = thetaRange / float(N)
-    theta = [[ centerTheta + (thetaStep * ((-N/2.0) + ii)) for ii in range(N+1) ] 
-             for centerTheta in centerThetas ]
+    
+    theta = []
+    for centerTheta in centerThetas:
+        inner_theta = []
+        for ii in range(N+1):
+            this_theta = centerTheta + (thetaStep * ((-N/2.0) + ii))
+            if   this_theta < 0.0    : this_theta = 0.0
+            elif this_theta > pi/2.0 : this_theta = pi/2.0
+            inner_theta.append(this_theta)
+        theta.append(inner_theta)
 
     theta[0] = map(lambda x: [r, x], theta[0])
 
