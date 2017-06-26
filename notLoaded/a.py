@@ -41,7 +41,7 @@ class UtilityCurve(UtilityCurveFunction):
         be used to prevent recalculating UtilityCurveFunction at runtime.
         """
         if normalize:
-            slef.normalized = True
+            self.normalized = True
             self.true_min = x_0
             self.true_max = x_100
             x_0   = self.normalize(x_0)
@@ -68,7 +68,7 @@ class UtilityCurve(UtilityCurveFunction):
         if not self.normalized: return x
         return (x - self.true_min) / (self.true_max - self.true_min)
 
-    def normalize(self, x):
+    def denormalize(self, x):
         """
         Denormalize value accoring to x_value init params
         """
@@ -606,7 +606,7 @@ def convertHyperSperetoCoordinates(spherePoints):
     return points
 
 
-def getMSR_ND_hyperShpere(uc_s, r=1.0, N=13, resultInTheta=False):
+def getMSR_ND_hyperShpere(uc_s, r=1.0, N=3, resultInTheta=False):
     thetaStep = (pi / 2.0) / float(N)
     theta = [[ thetaStep * ii for ii in range(N+1) ] for _ in uc_s][:-1]
 
@@ -631,7 +631,7 @@ def getMSR_ND_hyperShpere(uc_s, r=1.0, N=13, resultInTheta=False):
 
 def getMSR_ND_hyperShpere_prime( uc_s
                                , r=1.0
-                               , N=13
+                               , N=3
                                , tolerence=1e-9
                                , resultInTheta=False
                                , centerThetas=None
@@ -683,7 +683,7 @@ def getMSR_ND_hyperShpere_prime( uc_s
     if resultInTheta: return maxValue[2][1:]
     return maxValue[1]
 
-def getMSR_ND_hyperShpere(uc_s, r=1.0, N=13, minStep=1e-12):
+def getMSR_ND_hyperShpere(uc_s, r=1.0, N=3, minStep=1e-12):
     """
     Use a hypsersphere to find the optional progression values
     for the input Utility Curves (uc_s) for a given amount of 

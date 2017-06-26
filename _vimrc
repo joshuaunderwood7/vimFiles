@@ -1,13 +1,10 @@
 " Steal this config file. "
 
-" Turn off the bell
-set belloff=all
-
 " Make the shell read my .bashrc
 ""set shell=/bin/bash\ -i
 
 " Make the shell read my .profile
-""set shell=/bin/bash\ --login
+set shell=/bin/bash\ --login
 
 " Rebind <Leader> key
  let mapleader = ","
@@ -55,9 +52,11 @@ set bs=2     " make backspace behave like normal again (very important in gVim)
 
 " Bind nohl
 " Removes highlight of your last search
- noremap <C-n> :nohl<CR>
- vnoremap <C-n> :nohl<CR>
-" inoremap <C-n> <ESC>:nohl<CR> "Leave this one, this is search next!
+" ``<C>`` stands for ``CTRL`` and therefore ``<C-n>`` stands for ``CTRL+n``
+ noremap  <Spacen> :nohl<CR>
+ "noremap  <C-n> :nohl<CR>
+ "vnoremap <C-n> <Esc>:nohl<CR>
+ "inoremap <C-n> <Esc>:nohl<CR>
 
 " move search to center of screen
 noremap n nzz
@@ -94,8 +93,6 @@ noremap N Nzz
  map <Leader>_ :vertical resize +7<CR>
  map <Leader>+ :vertical resize -7<CR>
 
-" Toggle that NERDTree (file browsing)
- map <Leader><Tab> :NERDTreeToggle<CR>
 
 " easier moving of code blocks
 " Try to go into visual mode (v), thenselect several lines of code here and
@@ -104,7 +101,7 @@ noremap N Nzz
  vnoremap > >gv  " better indentation
 
 " a more portable hippie-complete
-""inoremap <C-\> <C-x><C-p>
+inoremap <C-\> <C-x><C-p>
 
 " Show whitespace
 " MUST be inserted BEFORE the colorscheme command
@@ -142,9 +139,9 @@ noremap N Nzz
 
 
 " Real programmers don't use TABs but spaces
- set tabstop=3
- set softtabstop=3
- set shiftwidth=3
+ set tabstop=4
+ set softtabstop=4
+ set shiftwidth=4
  set shiftround
  set expandtab
 
@@ -194,11 +191,6 @@ fun! MatchCaseTag()
     endtry
 endfun
 nnoremap <silent> <c-]> :call MatchCaseTag()<CR>
-
-" This makes tags search up from the current directory to HOME looking for
-" tags files, rather than only the current folder.
-set tags=./tags;/
-
 
 " vim-LaTeX stuff
 " REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
