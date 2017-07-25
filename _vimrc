@@ -1,10 +1,13 @@
 " Steal this config file. "
 
+" Turn off the bell
+""set belloff=all
+
 " Make the shell read my .bashrc
 ""set shell=/bin/bash\ -i
 
 " Make the shell read my .profile
-set shell=/bin/bash\ --login
+""set shell=/bin/bash\ --login
 
 " Rebind <Leader> key
  let mapleader = ","
@@ -23,7 +26,7 @@ noremap<F7>  :setlocal spell! spelllang=en_us<CR>
 noremap <Leader><F7> :!aspell -c %<CR>
 
 " Quicksave command
-" Modified to exit insert mode. Combined with save 
+" Modified to exit insert mode. Combined with save
 " this will save after every edit.
 " this is the best on laptops with crappy Esc key.
  noremap <C-Z> :update<CR>
@@ -38,13 +41,13 @@ filetype plugin indent on
 " Automatic reloading of .vimrc, ie) changes are immediate
  autocmd! bufwritepost .vimrc source %
 
-" Better copy & paste  
+" Better copy & paste
 " When you want to paste large blocks of code into vim, press F2 before you
 " paste. At the bottom you should see ``-- INSERT (paste) --``.
  set pastetoggle=<F2>
  set clipboard=unnamed
 
- 
+
 " Mouse and backspace
 ""set mouse=a  " on OSX press ALT and click
 set bs=2     " make backspace behave like normal again (very important in gVim)
@@ -52,11 +55,10 @@ set bs=2     " make backspace behave like normal again (very important in gVim)
 
 " Bind nohl
 " Removes highlight of your last search
-" ``<C>`` stands for ``CTRL`` and therefore ``<C-n>`` stands for ``CTRL+n``
- noremap  <Spacen> :nohl<CR>
- "noremap  <C-n> :nohl<CR>
- "vnoremap <C-n> <Esc>:nohl<CR>
- "inoremap <C-n> <Esc>:nohl<CR>
+ noremap <Space> :nohl<CR>
+" noremap <C-n> :nohl<CR>
+" vnoremap <C-n> :nohl<CR>
+" inoremap <C-n> <ESC>:nohl<CR> "Leave this one, this is search next!
 
 " move search to center of screen
 noremap n nzz
@@ -87,12 +89,14 @@ noremap N Nzz
 " easy file open
  map <C-f> <C-w><C-f>
 
-" Better resizing 
- map <Leader>= :resize +7<CR>
- map <Leader>- :resize -7<CR>
- map <Leader>_ :vertical resize +7<CR>
- map <Leader>+ :vertical resize -7<CR>
+" Better resizing
+ map <Leader>- :resize +7<CR>
+ map <Leader>= :vertical resize +7<CR>
 
+" Toggle that Ranger/NERDTree (file browsing)
+"" map <Leader><Tab> :NERDTreeToggle<CR>
+ let g:ranger_map_keys = 0
+ map <Leader><Tab> :Ranger<CR>
 
 " easier moving of code blocks
 " Try to go into visual mode (v), thenselect several lines of code here and
@@ -101,7 +105,7 @@ noremap N Nzz
  vnoremap > >gv  " better indentation
 
 " a more portable hippie-complete
-inoremap <C-\> <C-x><C-p>
+""inoremap <C-\> <C-x><C-p>
 
 " Show whitespace
 " MUST be inserted BEFORE the colorscheme command
@@ -130,7 +134,6 @@ inoremap <C-\> <C-x><C-p>
  set nowrap  " don't automatically wrap on load
  set fo-=t   " don't automatically wrap text when typing
  set colorcolumn=80
- highlight ColorColumn ctermbg=233
 
 
 " Useful settings
@@ -139,11 +142,11 @@ inoremap <C-\> <C-x><C-p>
 
 
 " Real programmers don't use TABs but spaces
- set tabstop=4
- set softtabstop=4
- set shiftwidth=4
- set shiftround
- set expandtab
+" set tabstop=8
+" set softtabstop=4
+" set shiftwidth=4
+" set shiftround
+" set expandtab
 
 
 " Make search case insensitive
@@ -192,6 +195,11 @@ fun! MatchCaseTag()
 endfun
 nnoremap <silent> <c-]> :call MatchCaseTag()<CR>
 
+" This makes tags search up from the current directory to HOME looking for
+" tags files, rather than only the current folder.
+set tags=./tags;/
+
+
 " vim-LaTeX stuff
 " REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
 "" filetype plugin on " Already set above, uncomment if copying this
@@ -212,4 +220,13 @@ set grepprg=grep\ -nH\ $*
 " 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
 " The following changes the default filetype back to 'tex':
 let g:tex_flavor='latex'
+
+" Makes vim look for my tags file
+set tags=/home/underwood/mytagsfile
+
+" Session saver
+noremap <F4> :mksession!<CR>
+
+" Make Errorfiles Great Again (tm)
+set errorfile=/home/underwood/compile.out
 
