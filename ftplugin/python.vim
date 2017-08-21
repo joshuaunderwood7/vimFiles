@@ -34,6 +34,7 @@ autocmd BufRead *.py nmap <F5> :!python %<CR>
 
 " Set's protable pydoc call for pydoc.vim
 let g:pydoc_cmd = 'python -m pydoc' 
+set keywordprg=pydoc
 
 " if you want to open pydoc files in vertical splits or tabs, 
 " give the appropriate command in your .vimrc with: 

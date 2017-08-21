@@ -27,4 +27,3 @@ noremap \| :cp<CR>zz
 
  hi Pmenu        ctermfg=230  ctermbg=238  guifg=#ffffd7    guibg=#444444
  hi PmenuSel     ctermfg=232  ctermbg=192  guifg=#080808    guibg=#cae982
- highlight ColorColumn ctermbg='darkgrey'

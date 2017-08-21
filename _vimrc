@@ -96,7 +96,8 @@ noremap N Nzz
 " Toggle that Ranger/NERDTree (file browsing)
 "" map <Leader><Tab> :NERDTreeToggle<CR>
  let g:ranger_map_keys = 0
- map <Leader><Tab> :Ranger<CR>
+"" map <Leader><Tab> :Ranger<CR>
+ map <Leader><Tab> :Explore<CR>
 
 " easier moving of code blocks
 " Try to go into visual mode (v), thenselect several lines of code here and
@@ -142,11 +143,11 @@ noremap N Nzz
 
 
 " Real programmers don't use TABs but spaces
-" set tabstop=8
-" set softtabstop=4
-" set shiftwidth=4
-" set shiftround
-" set expandtab
+set tabstop=8
+set softtabstop=3
+set shiftwidth=3
+set shiftround
+set expandtab
 
 
 " Make search case insensitive
