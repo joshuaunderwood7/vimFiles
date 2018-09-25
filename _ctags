@@ -1,0 +1,4 @@
+-f ~/mytagsfile
+--python-kinds=-i
+--recurse=yes
+--tag-relative=no

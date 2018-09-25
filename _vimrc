@@ -94,10 +94,10 @@ noremap N Nzz
  map <Leader>= :vertical resize +7<CR>
 
 " Toggle that Ranger/NERDTree (file browsing)
-"" map <Leader><Tab> :NERDTreeToggle<CR>
+ map <Leader><Tab> :NERDTreeToggle<CR>
  let g:ranger_map_keys = 0
 "" map <Leader><Tab> :Ranger<CR>
- map <Leader><Tab> :Explore<CR>
+"" map <Leader><Tab> :Explore<CR>
 
 " easier moving of code blocks
 " Try to go into visual mode (v), thenselect several lines of code here and
@@ -119,6 +119,7 @@ noremap N Nzz
 " wget -O wombat256mod.vim http://www.vim.org/scripts/download_script.php?src_id=13400
  set t_Co=256
  color wombat256mod
+ highlight qfLineNr ctermfg=yellow
 "" color darkblue
 
 
@@ -144,8 +145,8 @@ noremap N Nzz
 
 " Real programmers don't use TABs but spaces
 set tabstop=8
-set softtabstop=3
-set shiftwidth=3
+set softtabstop=4
+set shiftwidth=4
 set shiftround
 set expandtab
 
@@ -183,18 +184,18 @@ set expandtab
 " Pathogen package management
  execute pathogen#infect()
 
-" This makes C-] jumping case sensitive, then turns case-sensitivity off again
-" go to defn of tag under the cursor
-fun! MatchCaseTag()
-    let ic = &ic
-    set noic
-    try
-        exe 'tjump ' . expand('<cword>')
-    finally
-       let &ic = ic
-    endtry
-endfun
-nnoremap <silent> <c-]> :call MatchCaseTag()<CR>
+"" " This makes C-] jumping case sensitive, then turns case-sensitivity off again
+"" " go to defn of tag under the cursor
+"" fun! MatchCaseTag()
+""     let ic = &ic
+""     set noic
+""     try
+""         exe 'tjump ' . expand('<cword>')
+""     finally
+""        let &ic = ic
+""     endtry
+"" endfun
+"" nnoremap <silent> <c-]> :call MatchCaseTag()<CR>
 
 " This makes tags search up from the current directory to HOME looking for
 " tags files, rather than only the current folder.
@@ -223,11 +224,43 @@ set grepprg=grep\ -nH\ $*
 let g:tex_flavor='latex'
 
 " Makes vim look for my tags file
-set tags=/home/underwood/mytagsfile
+"set tags=/home/underwood/mytagsfile
 
 " Session saver
 noremap <F4> :mksession!<CR>
 
+" Remake ctags/cscope file from pwd
+noremap <F3> :!cscope -Rb .<CR>:cscope reset<CR>
+
 " Make Errorfiles Great Again (tm)
 set errorfile=/home/underwood/compile.out
+
+"" CSCOPE is finally built!
+
+if has("cscope")
+  set csprg=/home/underwood/local/bin/cscope
+  set csto=0
+  set cst
+  set nocsverb
+  " add any database in current directory
+  if filereadable("cscope.out")
+      cs add cscope.out
+  " else add database pointed to by environment
+  elseif $CSCOPE_DB != ""
+      cs add $CSCOPE_DB
+  endif
+  set csverb
+  set cscopequickfix=s-,c-,d-,i-,t-,e-
+
+   nmap <Leader>s :cs find s <C-R>=expand("<cword>")<CR><CR>	
+"" nmap <Leader>g :cs find g <C-R>=expand("<cword>")<CR><CR>	
+   nmap <Leader>cc :cs find c <C-R>=expand("<cword>")<CR><CR>	
+"" nmap <Leader>t :cs find t <C-R>=expand("<cword>")<CR><CR>	
+"" nmap <Leader>e :cs find e <C-R>=expand("<cword>")<CR><CR>	
+"" nmap <Leader>f :cs find f <C-R>=expand("<cfile>")<CR><CR>	
+"" nmap <Leader>i :cs find i <C-R>=expand("<cfile>")<CR><CR>
+   nmap <Leader>d :cs find d <C-R>=expand("<cword>")<CR><CR>	
+
+endif
+
 
