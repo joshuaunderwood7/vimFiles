@@ -1,4 +1,6 @@
--f ~/mytagsfile
+-f /home/underwood/mytagsfile
 --python-kinds=-i
 --recurse=yes
---tag-relative=no
+--tag-relative=yes
+--recurse=yes
+--exclude=.git

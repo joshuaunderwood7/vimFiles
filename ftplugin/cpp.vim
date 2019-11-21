@@ -1,9 +1,9 @@
 " ----my additions----
 "
 "" Quick Make command (moved to ~/.vim/ftplugin/cpp.vim
- noremap <F5> :make<CR>
- vnoremap <F5> <C-C>:make<CR>
- inoremap <F5> <C-O>:make<CR>
+ noremap <leader><F5> :make -j4<CR>
+ vnoremap <leader><F5> <C-C>:make -j4<CR>
+ inoremap <leader><F5> <C-O>:make -j4<CR>
 
 " run myBuildScript and open ~/output.txt in cfile
 "noremap <F5> :!~/bin/mymake.sh<CR>
@@ -15,9 +15,9 @@
  au BufNewFile,BufRead *.tem set filetype=cpp
 
 "debugging remap
-map \ :cn<CR>zz
-map <C-\> :copen<CR>
-map <Leader>\ :cclose<CR>
+noremap \ :cn<CR>zz
+noremap <C-\> :copen<CR>
+noremap <Leader>\ :cclose<CR>
 
 "set K help program back to man
 set keywordprg=man
@@ -35,4 +35,6 @@ set autoindent
 set fileformat=unix
 
 highlight qfLineNr ctermfg=yellow
+
+source ~/.vim/plugin/mark.vim
 

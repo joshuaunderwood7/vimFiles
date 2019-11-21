@@ -20,7 +20,7 @@ noremap <Space> i<Space>
 noremap <Leader>t :tab new<CR>
 
 "toggle spell check with :spell
-noremap<F7>  :setlocal spell! spelllang=en_us<CR>
+noremap<Leader><F7>  :setlocal spell! spelllang=en_us<CR>
 "inoremap<F7> <ESC>:setlocal spell! spelllang=en_us<CR>a
 "Call aspell on the current buffer file
 noremap <Leader><F7> :!aspell -c %<CR>
@@ -64,6 +64,8 @@ set bs=2     " make backspace behave like normal again (very important in gVim)
 noremap n nzz
 noremap N Nzz
 
+" I've come to like not always working at the very edge of the screen
+set scrolloff=12
 
 " Quick quit command
  noremap <Leader>e :quit<CR>  " Quit current window
@@ -164,19 +166,19 @@ set expandtab
  set nowritebackup
  set noswapfile
 
-" Better navigating through omnicomplete option list
-" See http://stackoverflow.com/questions/2170023/how-to-map-keys-for-popup-menu-in-vim
- set completeopt=longest,menuone
- function! OmniPopup(action)
-     if pumvisible()
-         if a:action == 'j'
-             return "\<C-N>"
-         elseif a:action == 'k'
-             return "\<C-P>"
-         endif
-     endif
-     return a:action
- endfunction
+"" Better navigating through omnicomplete option list
+"" See http://stackoverflow.com/questions/2170023/how-to-map-keys-for-popup-menu-in-vim
+" set completeopt=longest,menuone
+" function! OmniPopup(action)
+"     if pumvisible()
+"         if a:action == 'j'
+"             return "\<C-N>"
+"         elseif a:action == 'k'
+"             return "\<C-P>"
+"         endif
+"     endif
+"     return a:action
+" endfunction
 
  inoremap <silent><C-j> <C-R>=OmniPopup('j')<CR>
  inoremap <silent><C-k> <C-R>=OmniPopup('k')<CR>
@@ -224,13 +226,13 @@ set grepprg=grep\ -nH\ $*
 let g:tex_flavor='latex'
 
 " Makes vim look for my tags file
-"set tags=/home/underwood/mytagsfile
+set tags=/home/underwood/mytagsfile
 
 " Session saver
-noremap <F4> :mksession!<CR>
+noremap <Leader><F4> :mksession!<CR>
 
 " Remake ctags/cscope file from pwd
-noremap <F3> :!cscope -Rb .<CR>:cscope reset<CR>
+noremap <Leader><F3> :!cscope -Rb<CR>:cscope reset<CR>
 
 " Make Errorfiles Great Again (tm)
 set errorfile=/home/underwood/compile.out
@@ -240,7 +242,7 @@ set errorfile=/home/underwood/compile.out
 if has("cscope")
   set csprg=/home/underwood/local/bin/cscope
   set csto=0
-  set cst
+  ""set cscopetag
   set nocsverb
   " add any database in current directory
   if filereadable("cscope.out")
@@ -263,4 +265,8 @@ if has("cscope")
 
 endif
 
+" javacomplete2
+autocmd FileType java setlocal omnifunc=javacomplete#Complete
 
+" TagBar
+nmap <F8> :TagbarToggle<CR>
