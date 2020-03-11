@@ -525,16 +525,18 @@ std::vector<double> getMSR_ND_hyperShpere( const std::vector<UtilityCurve> & uc_
                                          , const double                      minStep
                                          )
 {
-    //Use a hypsersphere to find the optional progression values
-    //for the input Utility Curves (uc_s) for a given amount of 
-    //effort (r) over N evenly spaced test points.
-    //uc_s    : The Utility Curves that are to be optimized.
-    //radius  : The effort (distance from the origin, also radius of the
-    //          hypsersphere) to test the Utility Curves.
-    //N       : The number of angles to test the hypsersphere at.
-    //minStep : The minimum theta range to check.
+    /*
+    Use a hypsersphere to find the optional progression values
+    for the input Utility Curves (uc_s) for a given amount of 
+    effort (radius) over N evenly spaced test points.
+    uc_s    : The Utility Curves that are to be optimized.
+    radius  : The effort (distance from the origin, also radius of the
+              hypsersphere) to test the Utility Curves.
+    N       : The number of angles to test the hypsersphere at.
+    minStep : The minimum theta range to check.
 
-    //Keep in mind the complexity of this function is along O(N^|uc_s|).
+    Keep in mind the complexity of this function is along O(N^|uc_s|).
+    */
 
     double               thetaRange = M_PI / 2.0;
     std::vector<double>  thetas; 
@@ -571,12 +573,14 @@ std::vector<std::vector<double> > getMSR_ND(
                                   , const int                         DIVISIONS=13
                                   )
 {
-    //get the MSR curve for an N-dimensional option set, represented by
-    //the Utility Curves (uc_s).  The result will be the optimized progression
-    //for the Utility Curves for a given effort, not the sequence that should
-    //be followed.
+    /*
+    get the MSR curve for an N-dimensional option set, represented by
+    the Utility Curves (uc_s).  The result will be the optimized progression
+    for the Utility Curves for a given effort, not the sequence that should
+    be followed.
 
-    //Keep in mind the complexity of this function is along O(N^(|uc_s|+1)).
+    Keep in mind the complexity of this function is along O(N^(|uc_s|+1)).
+    */
 
     std::vector<std::vector<double> > points;
     double radiusStep;

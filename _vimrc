@@ -11,6 +11,8 @@
 
 " Rebind <Leader> key
  let mapleader = ","
+" Rebind ConqueGdb Leader
+let g:ConqueGdb_Leader = 'B'
 
 "This makes space and delete enter insert mode
 noremap <Space> i<Space>
@@ -23,7 +25,7 @@ noremap <Leader>t :tab new<CR>
 noremap<Leader><F7>  :setlocal spell! spelllang=en_us<CR>
 "inoremap<F7> <ESC>:setlocal spell! spelllang=en_us<CR>a
 "Call aspell on the current buffer file
-noremap <Leader><F7> :!aspell -c %<CR>
+"noremap <Leader><F7> :!aspell -c %<CR>
 
 " Quicksave command
 " Modified to exit insert mode. Combined with save
@@ -151,6 +153,11 @@ set softtabstop=4
 set shiftwidth=4
 set shiftround
 set expandtab
+
+" This will show tabs, traling whitespace, and newline charaters
+"set list
+"set listchars=tab:†‡,trail:•
+"set listchars=tab:†•
 
 
 " Make search case insensitive
