@@ -241,7 +241,7 @@ noremap <Leader><F4> :mksession!<CR>
 " Remake ctags/cscope file from pwd
 noremap <Leader><F3> :!cscope -Rb<CR>:cscope reset<CR>
 
-" Make Errorfiles Great Again (tm)
+" Make errorfiles work
 set errorfile=/home/underwood/compile.out
 
 "" CSCOPE is finally built!
