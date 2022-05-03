@@ -232,6 +232,12 @@ set grepprg=grep\ -nH\ $*
 " The following changes the default filetype back to 'tex':
 let g:tex_flavor='latex'
 
+" PUT THESE IN ~/.ctags to make mytagsfile work
+""-f /home/underwood/mytagsfile
+""--recurse=yes
+""--tag-relative=yes
+""--recurse=yes
+""--exclude=.git
 " Makes vim look for my tags file
 set tags=/home/underwood/mytagsfile
 
