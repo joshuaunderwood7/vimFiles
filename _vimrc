@@ -247,31 +247,31 @@ set errorfile=/home/underwood/compile.out
 
 "" CSCOPE is finally built!
 
-""if has("cscope")
-""  set csprg=/home/underwood/local/bin/cscope
-""  set csto=0
-""  ""set cscopetag
-""  set nocsverb
-""  " add any database in current directory
-""  if filereadable("cscope.out")
-""      cs add cscope.out
-""  " else add database pointed to by environment
-""  elseif $CSCOPE_DB != ""
-""      cs add $CSCOPE_DB
-""  endif
-""  set csverb
-""  set cscopequickfix=s-,c-,d-,i-,t-,e-
-""
-""   nmap <Leader>s :cs find s <C-R>=expand("<cword>")<CR><CR>	
-"""" nmap <Leader>g :cs find g <C-R>=expand("<cword>")<CR><CR>	
-""   nmap <Leader>cc :cs find c <C-R>=expand("<cword>")<CR><CR>	
-"""" nmap <Leader>t :cs find t <C-R>=expand("<cword>")<CR><CR>	
-"""" nmap <Leader>e :cs find e <C-R>=expand("<cword>")<CR><CR>	
-"""" nmap <Leader>f :cs find f <C-R>=expand("<cfile>")<CR><CR>	
-"""" nmap <Leader>i :cs find i <C-R>=expand("<cfile>")<CR><CR>
-""   nmap <Leader>d :cs find d <C-R>=expand("<cword>")<CR><CR>	
-""
-""endif
+"" if has("cscope")
+""   set csprg=/home/underwood/local/bin/cscope
+""   set csto=0
+""   ""set cscopetag
+""   set nocsverb
+""   " add any database in current directory
+""   if filereadable("cscope.out")
+""       cs add cscope.out
+""   " else add database pointed to by environment
+""   elseif $CSCOPE_DB != ""
+""       cs add $CSCOPE_DB
+""   endif
+""   set csverb
+""   set cscopequickfix=s-,c-,d-,i-,t-,e-
+"" 
+""    nmap <Leader>s :cs find s <C-R>=expand("<cword>")<CR><CR>	
+"" "" nmap <Leader>g :cs find g <C-R>=expand("<cword>")<CR><CR>	
+""    nmap <Leader>cc :cs find c <C-R>=expand("<cword>")<CR><CR>	
+"" "" nmap <Leader>t :cs find t <C-R>=expand("<cword>")<CR><CR>	
+"" "" nmap <Leader>e :cs find e <C-R>=expand("<cword>")<CR><CR>	
+"" "" nmap <Leader>f :cs find f <C-R>=expand("<cfile>")<CR><CR>	
+"" "" nmap <Leader>i :cs find i <C-R>=expand("<cfile>")<CR><CR>
+""    nmap <Leader>d :cs find d <C-R>=expand("<cword>")<CR><CR>	
+"" 
+"" endif
 
 " javacomplete2
 autocmd FileType java setlocal omnifunc=javacomplete#Complete
